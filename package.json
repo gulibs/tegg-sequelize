@@ -15,20 +15,19 @@
     }
   },
   "keywords": [
-    "egg",
-    "eggPlugin",
-    "egg-plugin",
-    "egg-tegg-sequelize",
-    "teggSequelize"
+    "tegg",
+    "sequelize",
+    "plugin",
+    "gulibs"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gulibs/egg-tegg-sequelize.git"
+    "url": "git+https://github.com/gulibs/tegg-sequelize.git"
   },
   "bugs": {
-    "url": "https://github.com/gulibs/egg/issues"
+    "url": "https://github.com/gulibs/tegg-sequelize/issues"
   },
-  "homepage": "https://github.com/gulibs/egg-tegg-sequelize#readme",
+  "homepage": "https://github.com/gulibs/tegg-sequelize#readme",
   "author": "HectorGu",
   "license": "MIT",
   "engines": {

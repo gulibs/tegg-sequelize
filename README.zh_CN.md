@@ -17,29 +17,40 @@ style=flat-square
 style=flat-square
 [download-url]: https://npmjs.org/package/@gulibs/tegg-sequelize
 
-[简体中文](README.zh_CN.md)
+[英文文档](README.md)
 
-<!--
-Description here.
--->
+Tegg 的 Sequelize 插件，提供单 / 多数据库连接管理、TS 类型声明和配置约定。
 
-## Install
+## 安装
 
 ```bash
-npm i @gulibs/tegg-sequelize
+npm i @eggjs/tegg-sequelize
 ```
 
-## Usage
+项目本身仍需要依赖：
+
+```json
+{
+  "dependencies": {
+    "@gulibs/tegg-sequelize": "^1.1.4",
+    "sequelize": "^6",
+    "sequelize-typescript": "^2",
+    "reflect-metadata": "^0.2"
+  }
+}
+```
+
+## 启用插件
 
 ```js
 // {app_root}/config/plugin.js
 exports.teggSequelize = {
   enable: true,
-  package: '@gulibs/tegg-sequelize',
+  package: '@eggjs/tegg-sequelize',
 };
 ```
 
-## Configuration
+## 基础配置
 
 ```js
 // {app_root}/config/config.default.js
@@ -55,19 +66,16 @@ exports.tsSequelize = {
     models: [ 'app/model' ],
   },
 };
-// For backward compatibility the plugin also reads `exports.teggSequelize`
+// 兼容老项目
 exports.teggSequelize = exports.tsSequelize;
 ```
 
-### Multiple clients
-
-Following the pattern documented in the official Tegg 文档（教程 /MySQL 篇），you can declare multiple Sequelize clients:
+## 多数据源
 
 ```js
 exports.tsSequelize = {
   default: {
     dialect: 'mysql',
-    port: 3306,
     models: [ 'app/model' ],
   },
   clients: {
@@ -84,32 +92,23 @@ exports.tsSequelize = {
       database: 'main',
     },
   },
-  app: true,
-  agent: false,
 };
 ```
 
-see [src/config/config.default.ts](src/config/config.default.ts) for more detail.
+访问方式：
 
-### Accessing clients
+- 单实例：`await app.tsSequelize.authenticate()`
+- 多实例：`const writer = app.tsSequelizes.get('writer')`
+- 兼容别名：`app.teggSequelize` / `app.teggSequelizes`
 
-- Single client: `await app.tsSequelize.authenticate()`.
-- Multiple clients: `const writer = app.tsSequelize.get('writer'); const reader = app.tsSequelizes.get('reader');`.
-- Aliases `app.teggSequelize` and `app.teggSequelizes` are kept for convenience.
-
-### Custom client factories
-
-For integration tests or multi-tenant scenarios you can override how a client instance is created via `customFactory` on any `client` / `clients` entry:
+## 自定义工厂
 
 ```js
 exports.tsSequelize = {
   clients: {
-    shadow: {
-      database: 'shadow',
-      username: 'shadow',
-      password: 'shadow',
+    mock: {
+      database: 'mock',
       customFactory(options, app, clientName) {
-        // Return any Sequelize-compatible object
         return new MockSequelize(options);
       },
     },
@@ -117,22 +116,10 @@ exports.tsSequelize = {
 };
 ```
 
-The factory receives the normalized options (with `models` defaulted to `['app/model']`), the current `EggCore` instance, and the `clientName` being registered.
+`customFactory` 可以在集成测试或多租户场景中生成自定义的 Sequelize 实例。
 
-## Example
+## 更多
 
-<!-- example here -->
-
-## Questions & Suggestions
-
-Please open an issue in the [gulibs/tegg-sequelize tracker](https://github.com/gulibs/tegg-sequelize/issues).
-
-## License
-
-[MIT](LICENSE)
-
-## Contributors
-
-[![Contributors](https://contrib.rocks/image?repo=gulibs/tegg-sequelize)](https://github.com/gulibs/tegg-sequelize/graphs/contributors)
-
-Made with [contributors-img](https://contrib.rocks).
+- 详见 `src/config/config.default.ts`
+- 问题反馈：<https://github.com/gulibs/tegg-sequelize/issues>
+- 许可证：MIT
