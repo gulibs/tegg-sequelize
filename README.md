@@ -1,27 +1,10 @@
 # @gulibs/tegg-sequelize
 
-[![NPM version](npm-image)][npm-url]
-[![Test coverage](codecov-image)][codecov-url]
-[![Known Vulnerabilities](snyk-image)][snyk-url]
-[![npm download](download-image)][download-url]
+![NPM version](https://img.shields.io/npm/v/@gulibs/tegg-sequelize.svg?style=flat-square)
 
-[npm-image]: https://img.shields.io/npm/v/@gulibs/tegg-sequelize.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/@gulibs/tegg-sequelize
-[codecov-image]: https://img.shields.io/codecov/c/github/gulibs/tegg-sequelize.svg?
-style=flat-square
-[codecov-url]: https://codecov.io/github/gulibs/tegg-sequelize?branch=master
-[snyk-image]: https://snyk.io/test/npm/@gulibs/tegg-sequelize/badge.svg?
-style=flat-square
-[snyk-url]: https://snyk.io/test/npm/@gulibs/tegg-sequelize
-[download-image]: https://img.shields.io/npm/dm/@gulibs/tegg-sequelize.svg?
-style=flat-square
-[download-url]: https://npmjs.org/package/@gulibs/tegg-sequelize
+> [中文文档](README.zh_CN.md)
 
-[简体中文](README.zh_CN.md)
-
-<!--
-Description here.
--->
+Sequelize integration for the Tegg runtime, with single/multi client support and TypeScript definitions.
 
 ## Install
 
@@ -29,7 +12,20 @@ Description here.
 npm i @gulibs/tegg-sequelize
 ```
 
-## Usage
+Host applications should also declare the direct database dependencies:
+
+```json
+{
+  "dependencies": {
+    "@gulibs/tegg-sequelize": "^1.1.6",
+    "sequelize": "^6",
+    "sequelize-typescript": "^2",
+    "reflect-metadata": "^0.2"
+  }
+}
+```
+
+## Enable Plugin
 
 ```js
 // {app_root}/config/plugin.js
@@ -39,7 +35,7 @@ exports.teggSequelize = {
 };
 ```
 
-## Configuration
+## Base Configuration
 
 ```js
 // {app_root}/config/config.default.js
@@ -59,7 +55,7 @@ exports.tsSequelize = {
 exports.teggSequelize = exports.tsSequelize;
 ```
 
-### Multiple clients
+## Multiple clients
 
 Following the pattern documented in the official Tegg 文档（教程 /MySQL 篇），you can declare multiple Sequelize clients:
 
@@ -91,13 +87,13 @@ exports.tsSequelize = {
 
 see [src/config/config.default.ts](src/config/config.default.ts) for more detail.
 
-### Accessing clients
+## Accessing clients
 
 - Single client: `await app.tsSequelize.authenticate()`.
 - Multiple clients: `const writer = app.tsSequelize.get('writer'); const reader = app.tsSequelizes.get('reader');`.
 - Aliases `app.teggSequelize` and `app.teggSequelizes` are kept for convenience.
 
-### Custom client factories
+## Custom client factories
 
 For integration tests or multi-tenant scenarios you can override how a client instance is created via `customFactory` on any `client` / `clients` entry:
 
@@ -123,13 +119,11 @@ The factory receives the normalized options (with `models` defaulted to `['app/m
 
 <!-- example here -->
 
-## Questions & Suggestions
+## More
 
-Please open an issue in the [gulibs/tegg-sequelize tracker](https://github.com/gulibs/tegg-sequelize/issues).
-
-## License
-
-[MIT](LICENSE)
+- See `src/config/config.default.ts` for detailed options.
+- Issues & feature requests: <https://github.com/gulibs/tegg-sequelize/issues>
+- License: [MIT](LICENSE)
 
 ## Contributors
 

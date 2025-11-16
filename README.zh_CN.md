@@ -1,30 +1,15 @@
 # @gulibs/tegg-sequelize
 
-[![NPM version](npm-image)][npm-url]
-[![Test coverage](codecov-image)][codecov-url]
-[![Known Vulnerabilities](snyk-image)][snyk-url]
-[![npm download](download-image)][download-url]
-
-[npm-image]: https://img.shields.io/npm/v/@gulibs/tegg-sequelize.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/@gulibs/tegg-sequelize
-[codecov-image]: https://img.shields.io/codecov/c/github/gulibs/tegg-sequelize.svg?
-style=flat-square
-[codecov-url]: https://codecov.io/github/gulibs/tegg-sequelize?branch=master
-[snyk-image]: https://snyk.io/test/npm/@gulibs/tegg-sequelize/badge.svg?
-style=flat-square
-[snyk-url]: https://snyk.io/test/npm/@gulibs/tegg-sequelize
-[download-image]: https://img.shields.io/npm/dm/@gulibs/tegg-sequelize.svg?
-style=flat-square
-[download-url]: https://npmjs.org/package/@gulibs/tegg-sequelize
-
-[英文文档](README.md)
+![NPM version](https://img.shields.io/npm/v/@gulibs/tegg-sequelize.svg?style=flat-square)
 
 Tegg 的 Sequelize 插件，提供单 / 多数据库连接管理、TS 类型声明和配置约定。
+
+> [English](README.md)
 
 ## 安装
 
 ```bash
-npm i @eggjs/tegg-sequelize
+npm i @gulibs/tegg-sequelize
 ```
 
 项目本身仍需要依赖：
@@ -32,7 +17,7 @@ npm i @eggjs/tegg-sequelize
 ```json
 {
   "dependencies": {
-    "@gulibs/tegg-sequelize": "^1.1.4",
+    "@gulibs/tegg-sequelize": "^1.1.6",
     "sequelize": "^6",
     "sequelize-typescript": "^2",
     "reflect-metadata": "^0.2"
@@ -95,7 +80,7 @@ exports.tsSequelize = {
 };
 ```
 
-访问方式：
+## 访问方式
 
 - 单实例：`await app.tsSequelize.authenticate()`
 - 多实例：`const writer = app.tsSequelizes.get('writer')`
