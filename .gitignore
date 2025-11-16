@@ -4,6 +4,7 @@ node_modules/
 coverage/
 docs/
 .idea/
+.tshy/
 run/
 .DS_Store
 *.swp
