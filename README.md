@@ -12,6 +12,12 @@ Sequelize integration for the Tegg runtime, with single/multi client support and
 npm i @gulibs/tegg-sequelize
 ```
 
+or
+
+```bash
+yarn add @gulibs/tegg-sequelize
+```
+
 Host applications should also declare the direct database dependencies:
 
 ```json

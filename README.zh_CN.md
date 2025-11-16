@@ -12,6 +12,12 @@ Tegg 的 Sequelize 插件，提供单 / 多数据库连接管理、TS 类型声�
 npm i @gulibs/tegg-sequelize
 ```
 
+or
+
+```bash
+yarn add @gulibs/tegg-sequelize
+```
+
 项目本身仍需要依赖：
 
 ```json
