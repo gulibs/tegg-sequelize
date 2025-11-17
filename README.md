@@ -45,7 +45,7 @@ exports.teggSequelize = {
 
 ```js
 // {app_root}/config/config.default.js
-exports.tsSequelize = {
+exports.teggSequelize = {
   app: true,
   agent: false,
   client: {
@@ -57,8 +57,6 @@ exports.tsSequelize = {
     models: [ 'app/model' ],
   },
 };
-// For backward compatibility the plugin also reads `exports.teggSequelize`
-exports.teggSequelize = exports.tsSequelize;
 ```
 
 ## Multiple clients
@@ -66,7 +64,7 @@ exports.teggSequelize = exports.tsSequelize;
 Following the pattern documented in the official Tegg 文档（教程 /MySQL 篇），you can declare multiple Sequelize clients:
 
 ```js
-exports.tsSequelize = {
+exports.teggSequelize = {
   default: {
     dialect: 'mysql',
     port: 3306,
@@ -95,16 +93,15 @@ see [src/config/config.default.ts](src/config/config.default.ts) for more detail
 
 ## Accessing clients
 
-- Single client: `await app.tsSequelize.authenticate()`.
-- Multiple clients: `const writer = app.tsSequelize.get('writer'); const reader = app.tsSequelizes.get('reader');`.
-- Aliases `app.teggSequelize` and `app.teggSequelizes` are kept for convenience.
+- Single client: `await app.teggSequelize.authenticate()`.
+- Multiple clients: `const writer = app.teggSequelizes.get('writer'); const reader = app.teggSequelizes.get('reader');`.
 
 ## Custom client factories
 
 For integration tests or multi-tenant scenarios you can override how a client instance is created via `customFactory` on any `client` / `clients` entry:
 
 ```js
-exports.tsSequelize = {
+exports.teggSequelize = {
   clients: {
     shadow: {
       database: 'shadow',

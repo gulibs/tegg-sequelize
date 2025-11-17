@@ -47,20 +47,18 @@ describe('test/index.test.ts', () => {
   });
 
   it('should expose multi client singleton helpers', () => {
-    const singleton = app.tsSequelize as unknown as Singleton<FakeSequelize>;
+    const singleton = app.teggSequelize as unknown as Singleton<FakeSequelize>;
     const writer = singleton.get('writer');
-    const reader = (app.tsSequelizes as Singleton<FakeSequelize>).get('reader');
+    const reader = (app.teggSequelizes as Singleton<FakeSequelize>).get('reader');
 
     assert(writer instanceof FakeSequelize);
     assert(reader instanceof FakeSequelize);
-    assert.deepStrictEqual(writer?.options.models, [ 'app/model' ]);
+    assert.deepStrictEqual(writer?.options.models, ['app/model']);
     assert.strictEqual(writer?.[CLIENT_NAME_SYMBOL], 'writer');
     assert.strictEqual(reader?.[CLIENT_NAME_SYMBOL], 'reader');
   });
 
-  it('should alias teggSequelize to tsSequelize', () => {
-    assert.strictEqual(app.tsSequelize, app.tsSequelizes);
-    assert.strictEqual(app.tsSequelize, app.teggSequelize);
-    assert.strictEqual(app.tsSequelizes, app.teggSequelizes);
+  it('should expose teggSequelizes alias for teggSequelize', () => {
+    assert.strictEqual(app.teggSequelize, app.teggSequelizes);
   });
 });

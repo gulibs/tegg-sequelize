@@ -33,4 +33,3 @@ const shared = {
 };
 
 exports.teggSequelize = shared;
-exports.tsSequelize = shared;

@@ -1,6 +1,7 @@
 import type { ILifecycleBoot } from '@eggjs/core';
 import type { Application } from 'egg';
 import type { EggSequelizeConfig } from './types.js';
+import { clearDefaultFlag } from './constants.js';
 import { initPlugin } from './lib/loader.js';
 
 export class SequelizeBootHook implements ILifecycleBoot {
@@ -12,6 +13,7 @@ export class SequelizeBootHook implements ILifecycleBoot {
 
   configDidLoad(): void {
     const config = this.getNormalizedConfig();
+    this.app.logger.info('[tegg-sequelize] config:', config);
     if (!config || !this.shouldLoad(config)) {
       return;
     }
@@ -19,15 +21,13 @@ export class SequelizeBootHook implements ILifecycleBoot {
   }
 
   private getNormalizedConfig(): EggSequelizeConfig | undefined {
-    const config =
-      this.app.config.tsSequelize ?? this.app.config.teggSequelize;
-    if (!config) {
+    const resolvedConfig = this.app.config.teggSequelize;
+    if (!resolvedConfig) {
       return undefined;
     }
 
-    this.app.config.tsSequelize = config;
-    this.app.config.teggSequelize = config;
-    return config;
+    clearDefaultFlag(resolvedConfig);
+    return resolvedConfig;
   }
 
   private shouldLoad(config: EggSequelizeConfig): boolean {

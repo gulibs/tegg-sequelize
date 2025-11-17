@@ -15,18 +15,17 @@ type EggSequelizeWithMeta = EggSequelize & { [CLIENT_NAME_SYMBOL]?: string };
 function createOneClient(
   config: EggSequelizeClientOption = {},
   app: EggCore,
-  clientName = 'tsSequelize',
+  clientName = 'teggSequelize',
 ): EggSequelize {
   const { models, customFactory, ...restConfig } = config;
-  const resolvedModels = models ?? [ 'app/model' ];
+  const resolvedModels = models ?? ['app/model'];
   const runtimeOptions: EggSequelizeClientRuntimeOptions = {
     ...restConfig,
     models: resolvedModels,
   };
 
-  app.coreLogger.info(
-    '[tegg-sequelize] client[%s] connecting %s@%s:%s/%s',
-    clientName,
+  app.logger.info(
+    '[tegg-sequelize] client connecting %s@%s:%s/%s',
     runtimeOptions.username ?? '<anonymous>',
     runtimeOptions.host ?? 'localhost',
     runtimeOptions.port ?? '',
@@ -49,12 +48,10 @@ function ensureAliasAccessors(app: Application): void {
   }
 
   const aliasMap: Record<string, string> = {
-    tsSequelizes: 'tsSequelize',
-    teggSequelize: 'tsSequelize',
-    teggSequelizes: 'tsSequelize',
+    teggSequelizes: 'teggSequelize',
   };
 
-  for (const [ alias, target ] of Object.entries(aliasMap)) {
+  for (const [alias, target] of Object.entries(aliasMap)) {
     if (Object.getOwnPropertyDescriptor(app, alias)) {
       continue;
     }
@@ -71,7 +68,10 @@ function ensureAliasAccessors(app: Application): void {
 }
 
 export function initPlugin(app: Application): void {
-  app.addSingleton('tsSequelize', createOneClient);
+  app.logger.info('[tegg-sequelize] initPlugin starting...');
+  app.addSingleton('teggSequelize', createOneClient);
+  app.logger.info('[tegg-sequelize] initPlugin addSingleton done');
   ensureAliasAccessors(app);
+  app.logger.info('[tegg-sequelize] initPlugin ensureAliasAccessors done');
 }
 

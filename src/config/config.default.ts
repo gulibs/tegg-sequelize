@@ -1,5 +1,6 @@
 import type { EggAppConfig, PowerPartial } from 'egg';
 import type { EggSequelizeConfig } from '../types.js';
+import { markAsDefaultConfig } from '../constants.js';
 
 /**
  * egg-tegg-sequelize default config
@@ -9,15 +10,14 @@ import type { EggSequelizeConfig } from '../types.js';
 export default () => {
   const config = {} as PowerPartial<EggAppConfig>;
 
-  const defaultSequelizeConfig: EggSequelizeConfig = {
+  const defaultSequelizeConfig: EggSequelizeConfig = markAsDefaultConfig({
     default: {
-      models: [ 'app/model' ],
+      models: ['app/model'],
     },
     app: true,
     agent: false,
-  };
+  });
 
-  config.tsSequelize = defaultSequelizeConfig;
   config.teggSequelize = defaultSequelizeConfig;
 
   return config;

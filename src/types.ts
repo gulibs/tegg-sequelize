@@ -4,62 +4,58 @@ import type { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 export type EggSequelize = Sequelize;
 
 export interface EggSequelizeClientRuntimeOptions extends Omit<SequelizeOptions, 'modelPaths'> {
-    models?: SequelizeOptions['models'];
+  models?: SequelizeOptions['models'];
 }
 
 export type EggSequelizeFactory = (
-    options: EggSequelizeClientRuntimeOptions,
-    app: EggCore,
-    clientName: string
+  options: EggSequelizeClientRuntimeOptions,
+  app: EggCore,
+  clientName: string
 ) => EggSequelize;
 
 export interface EggSequelizeClientOption extends EggSequelizeClientRuntimeOptions {
-    customFactory?: EggSequelizeFactory;
+  customFactory?: EggSequelizeFactory;
 }
 
 export type EggSequelizeClientsOption = Record<string, EggSequelizeClientOption>;
 
 export interface EggSequelizeConfig {
-    /**
+  /**
        * Default options mixed into every client (single or multi)
        */
-    default?: EggSequelizeClientOption;
-    /**
-       * Whether to load singleton onto app process
-       * @default true
-       */
-    app?: boolean;
-    /**
-       * Whether to load singleton onto agent process
-       * @default false
-       */
-    agent?: boolean;
-    client?: EggSequelizeClientOption;
-    clients?: EggSequelizeClientsOption;
+  default?: EggSequelizeClientOption;
+  /**
+   * Whether to load singleton onto app process
+   * @default true
+   */
+  app?: boolean;
+  /**
+   * Whether to load singleton onto agent process
+   * @default false
+   */
+  agent?: boolean;
+  client?: EggSequelizeClientOption;
+  clients?: EggSequelizeClientsOption;
 }
 
 declare module '@eggjs/core' {
-    interface EggAppConfig {
-        teggSequelize: EggSequelizeConfig;
-        tsSequelize: EggSequelizeConfig;
-    }
+  interface EggAppConfig {
+    teggSequelize: EggSequelizeConfig;
+  }
 }
 
 declare module 'egg' {
-    interface Application {
-        /**
-         * Primary Sequelize client, typically defined via `config.tsSequelize.client`.
-         * Kept as EggSequelize for backward compatibility so calling `app.tsSequelize.sync()`
-         * continues to work in TypeScript projects.
+  interface Application {
+    /**
+         * Primary Sequelize client, defined via `config.teggSequelize.client`
+         * or derived from `config.teggSequelize.clients`.
          */
-        tsSequelize: EggSequelize;
-        /**
+    teggSequelize: EggSequelize;
+    /**
          * Singleton helper when multiple clients are configured.
-         * Use `app.tsSequelizes.get('clientId')` to access specific clients.
+         * Use `app.teggSequelizes.get('clientId')` to access specific clients.
          */
-        tsSequelizes: Singleton<EggSequelize>;
-        teggSequelize: EggSequelize;
-        teggSequelizes: Singleton<EggSequelize>;
-    }
+    teggSequelizes: Singleton<EggSequelize>;
+  }
 }
 

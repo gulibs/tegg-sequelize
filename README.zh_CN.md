@@ -45,7 +45,7 @@ exports.teggSequelize = {
 
 ```js
 // {app_root}/config/config.default.js
-exports.tsSequelize = {
+exports.teggSequelize = {
   app: true,
   agent: false,
   client: {
@@ -57,14 +57,12 @@ exports.tsSequelize = {
     models: [ 'app/model' ],
   },
 };
-// 兼容老项目
-exports.teggSequelize = exports.tsSequelize;
 ```
 
 ## 多数据源
 
 ```js
-exports.tsSequelize = {
+exports.teggSequelize = {
   default: {
     dialect: 'mysql',
     models: [ 'app/model' ],
@@ -88,14 +86,13 @@ exports.tsSequelize = {
 
 ## 访问方式
 
-- 单实例：`await app.tsSequelize.authenticate()`
-- 多实例：`const writer = app.tsSequelizes.get('writer')`
-- 兼容别名：`app.teggSequelize` / `app.teggSequelizes`
+- 单实例：`await app.teggSequelize.authenticate()`
+- 多实例：`const writer = app.teggSequelizes.get('writer'); const reader = app.teggSequelizes.get('reader')`
 
 ## 自定义工厂
 
 ```js
-exports.tsSequelize = {
+exports.teggSequelize = {
   clients: {
     mock: {
       database: 'mock',
