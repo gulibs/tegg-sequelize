@@ -23,13 +23,14 @@ Host applications should also declare the direct database dependencies:
 ```json
 {
   "dependencies": {
-    "@gulibs/tegg-sequelize": "^1.1.6",
+    "@gulibs/tegg-sequelize": "^1.1.14",
     "sequelize": "^6",
-    "sequelize-typescript": "^2",
     "reflect-metadata": "^0.2"
   }
 }
 ```
+
+> **Note**: You don't need to install `sequelize-typescript` directly. All decorators and types are re-exported from `@gulibs/tegg-sequelize` for convenience and version control.
 
 ## Enable Plugin
 
@@ -95,6 +96,36 @@ see [src/config/config.default.ts](src/config/config.default.ts) for more detail
 
 - Single client: `await app.teggSequelize.authenticate()`.
 - Multiple clients: `const writer = app.teggSequelizes.get('writer'); const reader = app.teggSequelizes.get('reader');`.
+
+## Using Decorators and Types
+
+All commonly used decorators and types from `sequelize-typescript` are re-exported from `@gulibs/tegg-sequelize`. You can import them directly without installing `sequelize-typescript`:
+
+```typescript
+// Instead of: import { Table, Column, DataType } from 'sequelize-typescript';
+import { Table, Column, DataType, BelongsTo, ForeignKey, AllowNull, HasMany, Model } from '@gulibs/tegg-sequelize';
+
+@Table({
+  tableName: 'users',
+  timestamps: true,
+})
+export class User extends Model {
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  name!: string;
+
+  @HasMany(() => Post)
+  posts!: Post[];
+}
+```
+
+Available exports include:
+- **Decorators**: `Table`, `Column`, `BelongsTo`, `BelongsToMany`, `HasOne`, `HasMany`, `ForeignKey`, `AllowNull`, `Default`, `Unique`, `PrimaryKey`, `AutoIncrement`, `CreatedAt`, `UpdatedAt`, `DeletedAt`, `Comment`, `Index`, `DefaultScope`, `Scopes`, `Validate`, and all validation decorators
+- **Types**: `Sequelize`, `SequelizeOptions`, `ModelCtor`, `Model`
+- **Constants**: `DataType`
 
 ## Custom client factories
 

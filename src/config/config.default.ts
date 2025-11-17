@@ -12,7 +12,7 @@ export default () => {
 
   const defaultSequelizeConfig: EggSequelizeConfig = markAsDefaultConfig({
     default: {
-      models: ['app/model'],
+      models: [ 'app/model' ],
     },
     app: true,
     agent: false,

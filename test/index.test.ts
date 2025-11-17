@@ -53,7 +53,11 @@ describe('test/index.test.ts', () => {
 
     assert(writer instanceof FakeSequelize);
     assert(reader instanceof FakeSequelize);
-    assert.deepStrictEqual(writer?.options.models, ['app/model']);
+    // Models should be resolved to absolute paths
+    assert(Array.isArray(writer?.options.models));
+    assert(writer?.options.models.length === 1);
+    assert(typeof writer?.options.models[0] === 'string');
+    assert(writer?.options.models[0].endsWith('app/model'));
     assert.strictEqual(writer?.[CLIENT_NAME_SYMBOL], 'writer');
     assert.strictEqual(reader?.[CLIENT_NAME_SYMBOL], 'reader');
   });
