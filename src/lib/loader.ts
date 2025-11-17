@@ -70,8 +70,6 @@ function ensureAliasAccessors(app: Application): void {
 export function initPlugin(app: Application): void {
   app.logger.info('[tegg-sequelize] initPlugin starting...');
   app.addSingleton('teggSequelize', createOneClient);
-  app.logger.info('[tegg-sequelize] initPlugin addSingleton done');
   ensureAliasAccessors(app);
-  app.logger.info('[tegg-sequelize] initPlugin ensureAliasAccessors done');
 }
 

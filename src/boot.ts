@@ -13,7 +13,6 @@ export class SequelizeBootHook implements ILifecycleBoot {
 
   configDidLoad(): void {
     const config = this.getNormalizedConfig();
-    this.app.logger.info('[tegg-sequelize] config:', config);
     if (!config || !this.shouldLoad(config)) {
       return;
     }
