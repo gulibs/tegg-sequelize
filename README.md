@@ -102,7 +102,7 @@ see [src/config/config.default.ts](src/config/config.default.ts) for more detail
 All commonly used decorators and types from `sequelize-typescript` are re-exported from `@gulibs/tegg-sequelize`. You can import them directly without installing `sequelize-typescript`:
 
 ```typescript
-// Instead of: import { Table, Column, DataType } from 'sequelize-typescript';
+// Instead of: import { Table, Column, DataType } from '@gulibs/tegg-sequelize';
 import { Table, Column, DataType, BelongsTo, ForeignKey, AllowNull, HasMany, Model } from '@gulibs/tegg-sequelize';
 
 @Table({

@@ -1,5 +1,5 @@
 import type { EggCore, Singleton } from '@eggjs/core';
-import type { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import type { Sequelize, SequelizeOptions } from '@gulibs/tegg-sequelize';
 
 export type EggSequelize = Sequelize;
 

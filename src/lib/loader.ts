@@ -18,7 +18,7 @@ function resolveModelPaths(
   baseDir: string,
 ): SequelizeOptions['models'] {
   if (!models) {
-    return [ path.join(baseDir, 'app/model') ];
+    return [path.join(baseDir, 'app/model')];
   }
 
   // If models is already an array of constructors, return as-is
@@ -30,7 +30,7 @@ function resolveModelPaths(
   // At this point, models must be string or string[]
   const modelPaths: string[] = Array.isArray(models)
     ? (models as string[])
-    : [ models as string ];
+    : [models as string];
 
   return modelPaths.map(modelPath => {
     // If it's already an absolute path, return as-is
@@ -45,7 +45,7 @@ function resolveModelPaths(
 function createOneClient(
   config: EggSequelizeClientOption = {},
   app: EggCore,
-  clientName = 'teggSequelize',
+  clientName = 'default',
 ): EggSequelize {
   const { models, customFactory, ...restConfig } = config;
   const baseDir = (app as Application).baseDir || process.cwd();
@@ -73,11 +73,40 @@ function createOneClient(
     }
   }
 
-  const client = (customFactory
-    ? customFactory(runtimeOptions, app, clientName)
-    : new Sequelize(runtimeOptions)
-  ) as EggSequelizeWithMeta;
+  let client: EggSequelizeWithMeta;
+  try {
+    client = (customFactory
+      ? customFactory(runtimeOptions, app, clientName)
+      : new Sequelize(runtimeOptions)
+    ) as EggSequelizeWithMeta;
+  } catch (error) {
+    app.logger.error('[tegg-sequelize] client[%s] Failed to create Sequelize instance: %s', clientName, error);
+    app.logger.error('[tegg-sequelize] client[%s] Error stack: %s', clientName, (error as Error).stack);
+    throw error;
+  }
+
   client[CLIENT_NAME_SYMBOL] = clientName;
+
+  // Log loaded models count for debugging
+  // Note: models might not be loaded immediately, so we check after a short delay
+  setTimeout(() => {
+    try {
+      const modelCount = Object.keys(client.models).length;
+      app.logger.info('[tegg-sequelize] client[%s] loaded %d models', clientName, modelCount);
+      if (modelCount > 0) {
+        const modelNames = Object.keys(client.models).slice(0, 20);
+        app.logger.info('[tegg-sequelize] client[%s] model names: %s', clientName, modelNames.join(', '));
+        if (modelCount > 20) {
+          app.logger.info('[tegg-sequelize] client[%s] ... and %d more models', clientName, modelCount - 20);
+        }
+      } else {
+        app.logger.warn('[tegg-sequelize] client[%s] WARNING: No models loaded!', clientName);
+        app.logger.warn('[tegg-sequelize] client[%s] Check: 1) Model paths are correct 2) Model files have default exports 3) No circular dependencies', clientName);
+      }
+    } catch (error) {
+      app.logger.error('[tegg-sequelize] client[%s] Error checking models: %s', clientName, error);
+    }
+  }, 100);
 
   return client;
 }
@@ -92,7 +121,7 @@ function ensureAliasAccessors(app: Application): void {
     teggSequelizes: 'teggSequelize',
   };
 
-  for (const [ alias, target ] of Object.entries(aliasMap)) {
+  for (const [alias, target] of Object.entries(aliasMap)) {
     if (Object.getOwnPropertyDescriptor(app, alias)) {
       continue;
     }

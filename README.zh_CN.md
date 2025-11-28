@@ -95,7 +95,7 @@ exports.teggSequelize = {
 所有常用的 `sequelize-typescript` 装饰器和类型都已从 `@gulibs/tegg-sequelize` 重新导出。您可以直接导入它们，无需安装 `sequelize-typescript`：
 
 ```typescript
-// 替代：import { Table, Column, DataType } from 'sequelize-typescript';
+// 替代：import { Table, Column, DataType } from '@gulibs/tegg-sequelize';
 import { Table, Column, DataType, BelongsTo, ForeignKey, AllowNull, HasMany, Model } from '@gulibs/tegg-sequelize';
 
 @Table({
